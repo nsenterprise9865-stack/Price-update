@@ -1,286 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proposal: Price Update Strategy | NS Enterprise</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <!-- Mermaid diagrams -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <style>
-        :root {
-            --primary: #0f172a;
-            --accent: #3b82f6;
-            --accent-soft: #dbeafe;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --success: #10b981;
-        }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            line-height: 1.6;
-            padding: 40px 20px;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, #1e293b 100%);
-            color: white;
-            padding: 60px 40px;
-            border-radius: 24px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::after {
-            content: "";
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
-            background: var(--accent);
-            filter: blur(120px);
-            opacity: 0.2;
-            border-radius: 50%;
-        }
-        .hero h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: -0.025em;
-        }
-        .hero p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-        .hero .badge {
-            display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        /* Action Buttons */
-        .actions {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-            gap: 12px;
-        }
-        .btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-            color: var(--text-main);
-            text-decoration: none;
-        }
-        .btn:hover {
-            background: #f1f5f9;
-            transform: translateY(-1px);
-        }
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            border: none;
-        }
-        .btn-primary:hover {
-            background: #2563eb;
-        }
-        /* Content Cards */
-        .card {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-        .card h2 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .card h2::before {
-            content: "";
-            width: 4px;
-            height: 24px;
-            background: var(--accent);
-            border-radius: 4px;
-        }
-        /* Visuals */
-        .visual-container {
-            background: #fdfdfd;
-            border: 1px solid #f1f5f9;
-            border-radius: 16px;
-            padding: 30px;
-            margin: 24px 0;
-            display: flex;
-            justify-content: center;
-        }
-        /* Tables */
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-        }
-        th {
-            background: #f8fafc;
-            text-align: left;
-            padding: 16px;
-            font-weight: 600;
-            color: var(--text-main);
-            border-bottom: 2px solid var(--border);
-        }
-        td {
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        tr:last-child td {
-            border-bottom: none;
-        }
-        /* Points */
-        ul {
-            list-style: none;
-            margin-top: 20px;
-        }
-        li {
-            margin-bottom: 12px;
-            padding-left: 28px;
-            position: relative;
-        }
-        li::before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: bold;
-        }
-        /* Highlight box */
-        .recommendation {
-            background: var(--accent-soft);
-            padding: 30px;
-            border-radius: 16px;
-            border: 1px solid #bfdbfe;
-        }
-        .recommendation h3 {
-            color: #1e40af;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 60px;
-            padding-bottom: 40px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-        .footer strong {
-            color: var(--primary);
-        }
-        /* Print Settings */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            .hero {
-                border-radius: 0;
-                box-shadow: none;
-                background: white;
-                color: black;
-                border-bottom: 2px solid var(--primary);
-            }
-            .hero::after {
-                display: none;
-            }
-            .btn,
-            .actions {
-                display: none;
-            }
-            .card {
-                box-shadow: none;
-                border: none;
-                padding: 20px 0;
-            }
-            .container {
-                max-width: 100%;
-            }
-        }
-    </style>
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+
     <div class="container">
-        <div class="actions no-print">
+
+        <div class="actions no-print" data-aos="fade-down">
             <button class="btn btn-primary" onclick="window.print()">
-                <span>PDF Document</span>
+                <span>Print / Export PDF</span>
             </button>
         </div>
-        <div class="hero">
-            <div class="badge">Project Proposal</div>
-            <h1>Grocery Price Comparison System</h1>
-            <p>Analysis of Price Synchronisation Methodologies & Strategic Roadmap</p>
-        </div>
-        <div class="card">
+
+        <header class="hero" data-aos="fade-up">
+            <div class="badge">Enterprise Strategy</div>
+            <h1>Grocery Pricing Intelligence</h1>
+            <p>A high-performance roadmap for market synchronization and intelligent data automation.</p>
+        </header>
+
+        <section class="card" data-aos="fade-up">
             <h2>Executive Overview</h2>
-            <p>This document details the architectural choices for maintaining real-time pricing data across various
-                grocery networks (Shwapno, Agora, Meena Bazar). Our goal is to balance <strong>reliability</strong>,
-                <strong>cost-efficiency</strong>, and <strong>speed to market</strong>.
+            <p>This document architectural choices for maintaining real-time pricing data across various grocery
+                networks (Shwapno, Agora, Meena Bazar). Our goal is to balance <strong>absolute reliability</strong>,
+                <strong>cost-efficiency</strong>, and <strong>aggressive speed to market</strong>.
             </p>
-        </div>
-        <div class="card">
+        </section>
+
+        <section class="card" data-aos="fade-up">
             <h2>Option 1: CSV Bulk Administration</h2>
             <p>A controlled update method where the system processes structured data files provided or prepared by the
                 administrator. This is the industry-standard starting point for MVP launches.</p>
-            <div class="visual-container">
+
+            <div class="visual-container" style="flex-direction: column;">
+                <strong
+                    style="margin-bottom: 15px; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Manual
+                    Pipeline</strong>
                 <div class="mermaid">
-                    graph LR
-                    data[Price Sources] --> admin[Weekly CSV Batch]
-                    admin --> upload[System Validator]
+                    graph TD
+                    data(Pricing) --> admin(Batch)
+                    admin --> upload(Verify)
                     upload --> db[(Production DB)]
-                    db --> live[User Comparison App]
-                    style admin fill:#eff6ff,stroke:#3b82f6
+                    db --> live(System)
+
+                    classDef default fill:#fff,stroke:#2563eb,stroke-width:1.5px,color:#0f172a;
+                    classDef highlight fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#0f172a;
+                    class admin highlight;
                 </div>
             </div>
+
             <ul>
                 <li><strong>Absolute Accuracy:</strong> Multi-point verification ensures that the prices users see are
                     100% correct.</li>
@@ -289,21 +69,30 @@
                 <li><strong>Zero Downtime:</strong> Uploads are processed in milliseconds without hindering site
                     performance.</li>
             </ul>
-        </div>
-        <div class="card">
+        </section>
+
+        <section class="card" data-aos="fade-up">
             <h2>Option 2: Automated Cloud Scraping</h2>
             <p>A sophisticated "Crawler" engine that autonomously monitors supermarket digital storefronts and pushes
                 updates to your platform via background workers.</p>
-            <div class="visual-container">
+
+            <div class="visual-container" style="flex-direction: column;">
+                <strong
+                    style="margin-bottom: 15px; color: var(--accent); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">Automated
+                    Pipeline</strong>
                 <div class="mermaid">
                     graph TD
-                    sites[Store Digital Fronts] --> engine[Crawler Engine]
-                    engine --> parser[AI Parser]
-                    parser --> api[Data API]
+                    sites(Stores) --> engine(Crawler)
+                    engine --> parser(AI Filter)
+                    parser --> api(Data API)
                     api --> db[(Production DB)]
-                    style engine fill:#f0fdf4,stroke:#10b981
+
+                    classDef default fill:#fff,stroke:#2563eb,stroke-width:1.5px,color:#0f172a;
+                    classDef engineHighlight fill:#f0fdf4,stroke:#059669,stroke-width:2.5px,color:#0f172a;
+                    class engine engineHighlight;
                 </div>
             </div>
+
             <ul>
                 <li><strong>Scalable Automation:</strong> Capable of tracking 10,000+ SKU items without human
                     intervention.</li>
@@ -311,8 +100,9 @@
                 <li><strong>Advanced Engineering:</strong> Requires continuous monitoring and script adjustments when
                     stores update their security layers.</li>
             </ul>
-        </div>
-        <div class="card">
+        </section>
+
+        <section class="card" data-aos="fade-up">
             <h2>Strategic Comparative Matrix</h2>
             <div class="table-wrapper">
                 <table>
@@ -347,55 +137,66 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="card">
-            <h2>Automation Type: Custom vs. AI-Enhanced</h2>
-            <p>Choosing the right logic for automation depends on the number of stores and how frequently they update
-                their design.</p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="visual-container" style="flex-direction: column;">
-                    <strong style="margin-bottom: 10px; color: var(--text-muted);">Pure Custom Logic (Fixed
-                        Rules)</strong>
+        </section>
+
+        <section class="card" data-aos="fade-up">
+            <h2>Logic Strategy: Fixed vs. Self-Healing AI</h2>
+            <p>Choosing the right logic for automation depends on how frequently store designs update.</p>
+
+            <div class="logic-grid">
+                <div class="visual-container" style="flex-direction: column;" data-aos="fade-right">
+                    <strong
+                        style="margin-bottom: 12px; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Standard
+                        Script Logic</strong>
                     <div class="mermaid">
                         graph TD
-                        A[Store Website] --> B{Layout Changed?}
-                        B -->|Yes| C[Script Breaks]
-                        C --> D[System Fails / Manual Fix]
-                        B -->|No| E[Data Extracted Successfully]
-                        style C fill:#fee2e2,stroke:#ef4444
+                        A(Digital Front) --> B{Layout Change?}
+                        B -->|Yes| C(Script Impact)
+                        C --> D(Manual Repair)
+                        B -->|No| E(Data Sync)
+
+                        classDef default fill:#fff,stroke:#2563eb,stroke-width:2px,color:#0f172a;
+                        classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:3px,color:#0f172a;
+                        class C error;
                     </div>
                 </div>
-                <div class="visual-container" style="flex-direction: column;">
-                    <strong style="margin-bottom: 10px; color: var(--accent);">AI-Enhanced Logic (Self-Healing)</strong>
+                <div class="visual-container" style="flex-direction: column;" data-aos="fade-left">
+                    <strong
+                        style="margin-bottom: 12px; color: var(--accent); font-size: 0.85rem; text-transform: uppercase;">AI-Adaptive
+                        Logic</strong>
                     <div class="mermaid">
                         graph TD
-                        A1[Store Website] --> B1{Layout Changed?}
-                        B1 -->|Structure Updated| C1[AI Automatically Adapts]
-                        C1 --> D1[Data Extracted Successfully]
-                        B1 -->|Normal Flow| E1[Data Extracted Successfully]
-                        style C1 fill:#dcfce7,stroke:#22c55e
+                        A1(Digital Front) --> B1{Layout Change?}
+                        B1 -->|Update| C1(AI Self-Healing)
+                        C1 --> D1(Auto Sync)
+                        B1 -->|Normal| E1(Data Sync)
+
+                        classDef default fill:#fff,stroke:#2563eb,stroke-width:2px,color:#0f172a;
+                        classDef success fill:#f0fdf4,stroke:#059669,stroke-width:3px,color:#0f172a;
+                        class C1 success;
                     </div>
                 </div>
             </div>
-            <div class="table-wrapper" style="margin-top: 20px;">
+
+            <div class="table-wrapper" style="margin-top: 24px;">
                 <table>
                     <thead>
                         <tr>
                             <th>Scenario</th>
-                            <th>Pure Custom Script</th>
+                            <th>Custom Script</th>
                             <th>AI-Enhanced Script</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Store Website Updates</strong></td>
-                            <td style="color: #ef4444;">Script stops working</td>
-                            <td style="color: var(--success);">Script stays live</td>
+                            <td><strong>Store Updates</strong></td>
+                            <td style="color: var(--error); font-weight: 700;">Manual Intervention</td>
+                            <td style="color: var(--success); font-weight: 700;">Self-Healing</td>
                         </tr>
                         <tr>
-                            <td><strong>Dev Maintenance</strong></td>
-                            <td>High (Constant fixing)</td>
-                            <td>Low (Self-managing)</td>
+                            <td><strong>Maintenance</strong></td>
+                            <td>High Maintenance</td>
+                            <td>Zero-Touch Maintenance</td>
                         </tr>
                         <tr>
                             <td><strong>Running Cost</strong></td>
@@ -405,61 +206,84 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="card">
+        </section>
+
+        <section class="card" data-aos="fade-up">
             <h2>Scalability & Security</h2>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
                 <div>
                     <h3>Future-Proof Growth</h3>
-                    <p>The system is designed to scale from **3 stores to 30+ stores** without significant architectural
-                        changes. AI-Enhanced scraping allows us to add new stores in hours rather than days.</p>
+                    <p>The system is designed to scale from 3 to 30+ stores. AI-Enhanced scraping allows us to add new
+                        stores in hours rather than days.</p>
                 </div>
                 <div>
                     <h3>Security & Compliance</h3>
-                    <p>We use high-quality **Residential Proxies** to ensure our automated robots act like regular
-                        customers. This prevents IP blocking and ensures 99.9% uptime for your price data.</p>
+                    <p>We use high-quality **Residential Proxies** to mimic human behavior, preventing IP blocking and
+                        ensuring 99.9% uptime for your data.</p>
                 </div>
             </div>
-        </div>
-        <div class="card">
+        </section>
+
+        <section class="card" data-aos="fade-up">
             <h2>Project Implementation Roadmap</h2>
-            <div style="position: relative; padding-left: 30px; border-left: 2px solid var(--accent);">
-                <div style="margin-bottom: 30px;">
-                    <strong style="color: var(--accent);">Phase 1: Foundation (Current)</strong>
-                    <p>Setup the comparisons platform and CSV bulk upload for immediate stability.</p>
+            <div class="roadmap-container">
+                <div class="roadmap-item" data-aos="fade-left">
+                    <strong style="color: var(--accent); font-size: 1.1rem;">Phase 1: Foundation (Current)</strong>
+                    <p>Setup the comparisons platform and CSV bulk upload for immediate stability and trust.</p>
                 </div>
-                <div style="margin-bottom: 30px;">
-                    <strong style="color: var(--accent);">Phase 2: Automation Setup (Month 1-2)</strong>
+                <div class="roadmap-item" data-aos="fade-left" data-aos-delay="100">
+                    <strong style="color: var(--accent); font-size: 1.1rem;">Phase 2: Automation Setup (Month
+                        1-2)</strong>
                     <p>Integration of AI Scraping APIs and Daily Background Sync for all major supermarkets.</p>
                 </div>
-                <div>
-                    <strong style="color: var(--accent);">Phase 3: Intelligent Analytics (Future)</strong>
-                    <p>AI-driven price prediction to alert users when a price is likely to drop.</p>
-                </div>
             </div>
-        </div>
-        <div class="recommendation">
+        </section>
+
+        <div class="recommendation" data-aos="zoom-in">
             <h3>Strategic Recommendation</h3>
             <p>For the initial <strong>Phase 1 (Go-to-Market)</strong>, we strongly advise <strong>Option 1 (CSV Bulk
                     Administration)</strong>. It provides the highest level of stability and trust for new users. As the
                 platform scales, <strong>Option 2</strong> can be integrated as a backend performance upgrade without
                 disrupting the existing user base.</p>
         </div>
-        <div class="footer">
-            <p>Consultation provided by <strong>NS Enterprise AI Solutions</strong></p>
+
+        <footer class="footer">
+            <p>Strategic Consultation by <strong>NS Enterprise AI Solutions</strong></p>
             <p>&copy; 2026 Bangladesh Tech Partnership. All rights reserved.</p>
-        </div>
+        </footer>
     </div>
+
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         mermaid.initialize({
             startOnLoad: true,
-            theme: 'base',
+            theme: isDarkMode ? 'dark' : 'base',
             themeVariables: {
-                'primaryColor': '#3b82f6',
-                'primaryTextColor': '#fff',
-                'lineColor': '#64748b'
+                'primaryColor': isDarkMode ? '#1e293b' : '#ffffff',
+                'primaryTextColor': isDarkMode ? '#f1f5f9' : '#0f172a',
+                'primaryBorderColor': '#2563eb',
+                'lineColor': isDarkMode ? '#60a5fa' : '#2563eb',
+                'secondaryColor': isDarkMode ? '#0f172a' : '#f8fafc',
+                'tertiaryColor': isDarkMode ? '#0f172a' : '#f8fafc',
+                'fontSize': '10px',
+                'fontFamily': 'Arial',
+                'nodePadding': '4'
+            },
+            flowchart: {
+                htmlLabels: true,
+                curve: 'basis',
+                useMaxWidth: false,
+                padding: 2
             }
         });
     </script>
 </body>
+
 </html>
