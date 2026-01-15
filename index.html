@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal: Price Update Strategy | NS Enterprise</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Mermaid diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --accent-soft: #dbeafe;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #1e293b 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 24px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            filter: blur(120px);
+            opacity: 0.2;
+            border-radius: 50%;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.025em;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        .hero .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+            gap: 12px;
+        }
+        .btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: #f1f5f9;
+            transform: translateY(-1px);
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        /* Content Cards */
+        .card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .card h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .card h2::before {
+            content: "";
+            width: 4px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+        /* Visuals */
+        .visual-container {
+            background: #fdfdfd;
+            border: 1px solid #f1f5f9;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 24px 0;
+            display: flex;
+            justify-content: center;
+        }
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--border);
+        }
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        /* Points */
+        ul {
+            list-style: none;
+            margin-top: 20px;
+        }
+        li {
+            margin-bottom: 12px;
+            padding-left: 28px;
+            position: relative;
+        }
+        li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        /* Highlight box */
+        .recommendation {
+            background: var(--accent-soft);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #bfdbfe;
+        }
+        .recommendation h3 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-bottom: 40px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .footer strong {
+            color: var(--primary);
+        }
+        /* Print Settings */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .hero {
+                border-radius: 0;
+                box-shadow: none;
+                background: white;
+                color: black;
+                border-bottom: 2px solid var(--primary);
+            }
+            .hero::after {
+                display: none;
+            }
+            .btn,
+            .actions {
+                display: none;
+            }
+            .card {
+                box-shadow: none;
+                border: none;
+                padding: 20px 0;
+            }
+            .container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="actions no-print">
+            <button class="btn btn-primary" onclick="window.print()">
+                <span>PDF Document</span>
+            </button>
+        </div>
+        <div class="hero">
+            <div class="badge">Project Proposal</div>
+            <h1>Grocery Price Comparison System</h1>
+            <p>Analysis of Price Synchronisation Methodologies & Strategic Roadmap</p>
+        </div>
+        <div class="card">
+            <h2>Executive Overview</h2>
+            <p>This document details the architectural choices for maintaining real-time pricing data across various
+                grocery networks (Shwapno, Agora, Meena Bazar). Our goal is to balance <strong>reliability</strong>,
+                <strong>cost-efficiency</strong>, and <strong>speed to market</strong>.</p>
+        </div>
+        <div class="card">
+            <h2>Option 1: CSV Bulk Administration</h2>
+            <p>A controlled update method where the system processes structured data files provided or prepared by the
+                administrator. This is the industry-standard starting point for MVP launches.</p>
+            <div class="visual-container">
+                <div class="mermaid">
+                    graph LR
+                    data[Price Sources] --> admin[Weekly CSV Batch]
+                    admin --> upload[System Validator]
+                    upload --> db[(Production DB)]
+                    db --> live[User Comparison App]
+                    style admin fill:#eff6ff,stroke:#3b82f6
+                </div>
+            </div>
+            <ul>
+                <li><strong>Absolute Accuracy:</strong> Multi-point verification ensures that the prices users see are
+                    100% correct.</li>
+                <li><strong>Infrastructure Stability:</strong> Eliminates dependency on third-party website layouts
+                    which change frequently.</li>
+                <li><strong>Zero Downtime:</strong> Uploads are processed in milliseconds without hindering site
+                    performance.</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h2>Option 2: Automated Cloud Scraping</h2>
+            <p>A sophisticated "Crawler" engine that autonomously monitors supermarket digital storefronts and pushes
+                updates to your platform via background workers.</p>
+            <div class="visual-container">
+                <div class="mermaid">
+                    graph TD
+                    sites[Store Digital Fronts] --> engine[Crawler Engine]
+                    engine --> parser[AI Parser]
+                    parser --> api[Data API]
+                    api --> db[(Production DB)]
+                    style engine fill:#f0fdf4,stroke:#10b981
+                </div>
+            </div>
+            <ul>
+                <li><strong>Scalable Automation:</strong> Capable of tracking 10,000+ SKU items without human
+                    intervention.</li>
+                <li><strong>Real-time Sync:</strong> Can detect flash sales or hourly price drops automatically.</li>
+                <li><strong>Advanced Engineering:</strong> Requires continuous monitoring and script adjustments when
+                    stores update their security layers.</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h2>Strategic Comparative Matrix</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>CSV Bulk Update</th>
+                            <th>Automated Scraping</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Operation</strong></td>
+                            <td>Periodic (Weekly/Daily)</td>
+                            <td>Continuous (Real-time)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Risk Profile</strong></td>
+                            <td>Low (Fail-safe)</td>
+                            <td>Moderate (Structure dependent)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Implementation</strong></td>
+                            <td>Included in Standard</td>
+                            <td>Premium Engineering Add-on</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Market Readiness</strong></td>
+                            <td>Immediate</td>
+                            <td>4-6 Weeks Dev Time</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="recommendation">
+            <h3>Strategic Recommendation</h3>
+            <p>For the initial <strong>Phase 1 (Go-to-Market)</strong>, we strongly advise <strong>Option 1 (CSV Bulk
+                    Administration)</strong>. It provides the highest level of stability and trust for new users. As the
+                platform scales, <strong>Option 2</strong> can be integrated as a backend performance upgrade without
+                disrupting the existing user base.</p>
+        </div>
+        <div class="footer">
+            <p>Consultation provided by <strong>NS Enterprise AI Solutions</strong></p>
+            <p>&copy; 2026 Bangladesh Tech Partnership. All rights reserved.</p>
+        </div>
+    </div>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                'primaryColor': '#3b82f6',
+                'primaryTextColor': '#fff',
+                'lineColor': '#64748b'
+            }
+        });
+    </script>
+</body>
+</html>
