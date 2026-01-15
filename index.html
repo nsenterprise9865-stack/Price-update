@@ -264,7 +264,8 @@
             <h2>Executive Overview</h2>
             <p>This document details the architectural choices for maintaining real-time pricing data across various
                 grocery networks (Shwapno, Agora, Meena Bazar). Our goal is to balance <strong>reliability</strong>,
-                <strong>cost-efficiency</strong>, and <strong>speed to market</strong>.</p>
+                <strong>cost-efficiency</strong>, and <strong>speed to market</strong>.
+            </p>
         </div>
         <div class="card">
             <h2>Option 1: CSV Bulk Administration</h2>
@@ -342,6 +343,61 @@
                             <td><strong>Market Readiness</strong></td>
                             <td>Immediate</td>
                             <td>4-6 Weeks Dev Time</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Automation Type: Custom vs. AI-Enhanced</h2>
+            <p>Choosing the right logic for automation depends on the number of stores and how frequently they update
+                their design.</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="visual-container" style="flex-direction: column;">
+                    <strong style="margin-bottom: 10px; color: var(--text-muted);">Pure Custom Logic (Brittle)</strong>
+                    <div class="mermaid">
+                        graph TD
+                        A[Store Website] --> B{Design Change?}
+                        B -->|Yes| C[Script Breaks]
+                        C --> D[Manual Dev Fix Needed]
+                        B -->|No| E[Data Extracted]
+                    </div>
+                </div>
+                <div class="visual-container" style="flex-direction: column;">
+                    <strong style="margin-bottom: 10px; color: var(--accent);">AI-Enhanced Logic (Self-Healing)</strong>
+                    <div class="mermaid">
+                        graph TD
+                        A1[Store Website] --> B1{Design Change?}
+                        B1 -->|Yes| C1[AI Adapts Automatically]
+                        C1 --> D1[Data Extracted]
+                        B1 -->|No| E1[Data Extracted]
+                    </div>
+                </div>
+            </div>
+            <div class="table-wrapper" style="margin-top: 20px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Pure Custom Script</th>
+                            <th>AI-Enhanced Script</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Store Website Updates</strong></td>
+                            <td style="color: #ef4444;">Script stops working</td>
+                            <td style="color: var(--success);">Script stays live</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dev Maintenance</strong></td>
+                            <td>High (Constant fixing)</td>
+                            <td>Low (Self-managing)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Running Cost</strong></td>
+                            <td>$0 / Month</td>
+                            <td>$10 - $20 / Month</td>
                         </tr>
                     </tbody>
                 </table>
