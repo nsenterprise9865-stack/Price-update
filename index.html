@@ -354,23 +354,26 @@
                 their design.</p>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="visual-container" style="flex-direction: column;">
-                    <strong style="margin-bottom: 10px; color: var(--text-muted);">Pure Custom Logic (Brittle)</strong>
+                    <strong style="margin-bottom: 10px; color: var(--text-muted);">Pure Custom Logic (Fixed
+                        Rules)</strong>
                     <div class="mermaid">
                         graph TD
-                        A[Store Website] --> B{Design Change?}
+                        A[Store Website] --> B{Layout Changed?}
                         B -->|Yes| C[Script Breaks]
-                        C --> D[Manual Dev Fix Needed]
-                        B -->|No| E[Data Extracted]
+                        C --> D[System Fails / Manual Fix]
+                        B -->|No| E[Data Extracted Successfully]
+                        style C fill:#fee2e2,stroke:#ef4444
                     </div>
                 </div>
                 <div class="visual-container" style="flex-direction: column;">
                     <strong style="margin-bottom: 10px; color: var(--accent);">AI-Enhanced Logic (Self-Healing)</strong>
                     <div class="mermaid">
                         graph TD
-                        A1[Store Website] --> B1{Design Change?}
-                        B1 -->|Yes| C1[AI Adapts Automatically]
-                        C1 --> D1[Data Extracted]
-                        B1 -->|No| E1[Data Extracted]
+                        A1[Store Website] --> B1{Layout Changed?}
+                        B1 -->|Structure Updated| C1[AI Automatically Adapts]
+                        C1 --> D1[Data Extracted Successfully]
+                        B1 -->|Normal Flow| E1[Data Extracted Successfully]
+                        style C1 fill:#dcfce7,stroke:#22c55e
                     </div>
                 </div>
             </div>
@@ -401,6 +404,38 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Scalability & Security</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <h3>Future-Proof Growth</h3>
+                    <p>The system is designed to scale from **3 stores to 30+ stores** without significant architectural
+                        changes. AI-Enhanced scraping allows us to add new stores in hours rather than days.</p>
+                </div>
+                <div>
+                    <h3>Security & Compliance</h3>
+                    <p>We use high-quality **Residential Proxies** to ensure our automated robots act like regular
+                        customers. This prevents IP blocking and ensures 99.9% uptime for your price data.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Project Implementation Roadmap</h2>
+            <div style="position: relative; padding-left: 30px; border-left: 2px solid var(--accent);">
+                <div style="margin-bottom: 30px;">
+                    <strong style="color: var(--accent);">Phase 1: Foundation (Current)</strong>
+                    <p>Setup the comparisons platform and CSV bulk upload for immediate stability.</p>
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <strong style="color: var(--accent);">Phase 2: Automation Setup (Month 1-2)</strong>
+                    <p>Integration of AI Scraping APIs and Daily Background Sync for all major supermarkets.</p>
+                </div>
+                <div>
+                    <strong style="color: var(--accent);">Phase 3: Intelligent Analytics (Future)</strong>
+                    <p>AI-driven price prediction to alert users when a price is likely to drop.</p>
+                </div>
             </div>
         </div>
         <div class="recommendation">
